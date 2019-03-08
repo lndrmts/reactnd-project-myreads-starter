@@ -19,6 +19,7 @@ class BooksApp extends Component {
   }
 
   render() {
+    const { books } = this.state
     return (
       <div className="app">
         <Route path="/search" component={() => (
@@ -26,7 +27,7 @@ class BooksApp extends Component {
         )} />
         <Route exact path="/" render={() => (
           <div>
-            <BookShelves />
+            <BookShelves booksData= {books} />
             <div className="open-search">
               <Link to="/search">Add a book</Link>
             </div>
