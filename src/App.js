@@ -18,6 +18,18 @@ class BooksApp extends Component {
       })
   }
 
+  changeShelf = (newBook, shelf) => {
+    BooksAPI.update(newBook, shelf).then( response => {
+      newBook.shelf = shelf;
+      this.setState(
+          prevState => ({
+          books: prevState.books
+            .filter(book => book.id !== newBook.id)
+            .concat(newBook)
+        }));
+    });
+  }
+
   render() {
     const { books } = this.state
     return (
@@ -27,7 +39,9 @@ class BooksApp extends Component {
         )} />
         <Route exact path="/" render={() => (
           <div>
-            <BookShelves booksData= {books} />
+            <BookShelves
+              books= {books}
+              changeShelf={this.changeShelf} />
             <div className="open-search">
               <Link to="/search">Add a book</Link>
             </div>

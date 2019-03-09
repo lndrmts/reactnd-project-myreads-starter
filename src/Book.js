@@ -1,26 +1,33 @@
 import React from 'react'
-import BookShelfChanger from './BookShelfChanger'
 
+const Book = props => {
+		const books = props.books.map((book, index) => {
+		const updateShelf = event =>
+		props.changeShelf(book, event.target.value);
 
-const Book = props => { 
-    const books = props.booksData.map((book, index) => {
         return (
         	<li key={book.id}>
            <div className="book">
 					<div className="book-top">
-						<div 
-							className="book-cover" 
+						<div
+							className="book-cover"
 							style={
-								{ 
-									width: 128, 
-									height: 188, 
+								{
+									width: 128,
+									height: 188,
 									backgroundImage: `url(${book.imageLinks.thumbnail})`
 								}
 							}
 							>
 							</div>
 						<div className="book-shelf-changer">
-							<BookShelfChanger />
+							<select value={book.shelf} onChange={updateShelf}>
+			                <option value="move" disabled>Move to...</option>
+			                <option value="currentlyReading">Currently Reading</option>
+			                <option value="wantToRead">Want to Read</option>
+			                <option value="read">Read</option>
+			                <option value="none">None</option>
+			              </select>
 						</div>
 					</div>
 						<div className="book-title">{book.title}</div>

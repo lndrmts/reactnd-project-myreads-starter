@@ -3,7 +3,7 @@ import BookShelf from './BookShelf'
 
 class BookShelves extends Component {
 	render() {
-    const { booksData } = this.props;
+    const { books, changeShelf} = this.props;
 		return (
     <div className="list-books-content">
       <div>
@@ -12,9 +12,18 @@ class BookShelves extends Component {
             <h1>MyReads</h1>
           </div>
           <div className="list-books-content">
-            <BookShelf booksData= {booksData.filter( book => book.shelf === 'currentlyReading')} />
-            <BookShelf booksData= {booksData.filter( book => book.shelf === 'wantToRead')} />
-            <BookShelf booksData= {booksData.filter( book => book.shelf === 'read')} />
+            <BookShelf
+              title='Currently Reading'
+              books= {books.filter( book => book.shelf === 'currentlyReading')}
+              changeShelf= {changeShelf} />
+            <BookShelf
+              title='Want to Read'
+              books= {books.filter( book => book.shelf === 'wantToRead')}
+              changeShelf= {changeShelf} />
+            <BookShelf
+              title='Read'
+              books= {books.filter( book => book.shelf === 'read')}
+              changeShelf= {changeShelf} />
           </div>
         </div>
       </div>
