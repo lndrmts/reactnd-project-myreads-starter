@@ -1,12 +1,12 @@
 import React from 'react'
 
 const Book = props => {
-		const books = props.books.map((book, index) => {
+		const books = props.books.map((book) => {
 		const updateShelf = event =>
 		props.changeShelf(book, event.target.value);
 
         return (
-        	<li key={book.id}>
+        <li key={book.id}>
            <div className="book">
 					<div className="book-top">
 						<div
@@ -15,7 +15,7 @@ const Book = props => {
 								{
 									width: 128,
 									height: 188,
-									backgroundImage: `url(${book.imageLinks.thumbnail})`
+									backgroundImage: `url(${book.imageLinks ? book.imageLinks.thumbnail : 'http://via.placeholder.com/128x188.png?text=no%20image'})`
 								}
 							}
 							>
