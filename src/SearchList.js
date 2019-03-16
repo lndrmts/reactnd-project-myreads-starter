@@ -11,26 +11,34 @@ class SearchList extends Component {
 	updateQuery = (query) => {
 		this.setState(() =>(
 		{
-			query: query.trim()
+			query: query
 		}))
 	}
-	searchBooks = (query) => {
-		if (query !== '') {
-			BooksAPI.search(query)
-				.then((response) => {
-					this.setState(() => ({
-						foundBooks: !response || response.error ? [] : response
-				}))
-			})
+	searchBooks = (query)  => {
+		if (query) {
+					BooksAPI.search(query)
+					.then((response) => {
+						this.setState(() => ({
+							foundBooks: !response || response.error ? [] : response
+					}))
+				})
 		} else {
 			this.setState(() => ({
 				foundBooks: []
 			}))
+
 		}
 	}
 	handleSearchBooks = (query) => {
+		let timeout = null;
+		const inputSearch = document.getElementById('inputSearch');
 		this.updateQuery(query)
-		this.searchBooks(query)
+		inputSearch.onkeyup = () => {
+			clearTimeout(timeout);
+			timeout = setTimeout(() => {
+				this.searchBooks(query)
+			}, 100)
+		}
 	}
 
 	render() {
@@ -53,6 +61,7 @@ class SearchList extends Component {
 					<Link to="/" className="close-search">Close</Link>
 					<div className="search-books-input-wrapper">
 						<input
+						id="inputSearch"
 						type="text"
 						placeholder="Search by title or author"
 						value={query}
