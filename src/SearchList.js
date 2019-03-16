@@ -10,28 +10,28 @@ class SearchList extends Component {
 	}
 	updateQuery = (query) => {
 		this.setState(() =>(
-			{
+		{
 			query: query.trim()
 		}))
 	}
-	searchBooks(query) {
-	    if (query !== '') {
-	      BooksAPI.search(query)
-	      .then((books) => {
-	        this.setState(() => ({
-	          foundBooks: books
-	        }))
-	      })
-	    } else {
-	    	this.setState(() => ({
-	          foundBooks: []
-	        }))
-	    }
-	 }
-	 handleSearchBooks = (query) => {
-		this.searchBooks(query)
+	searchBooks = (query) => {
+		if (query !== '') {
+			BooksAPI.search(query)
+				.then((response) => {
+					this.setState(() => ({
+						foundBooks: !response || response.error ? [] : response
+				}))
+			})
+		} else {
+			this.setState(() => ({
+				foundBooks: []
+			}))
+		}
+	}
+	handleSearchBooks = (query) => {
 		this.updateQuery(query)
-	 }
+		this.searchBooks(query)
+	}
 
 	render() {
 		const { query, foundBooks } = this.state
@@ -44,46 +44,35 @@ class SearchList extends Component {
 					foundBook.shelf = book.shelf
 				}
 			})
-			return foundBook
+				return foundBook
 		})
 
 		return (
 			<div className="search-books">
-	            <div className="search-books-bar">
-	              <Link to="/" className="close-search">Close</Link>
-	              <div className="search-books-input-wrapper">
-	                {/*
-	                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-	                  You can find these search terms here:
-	                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+				<div className="search-books-bar">
+					<Link to="/" className="close-search">Close</Link>
+					<div className="search-books-input-wrapper">
+						<input
+						type="text"
+						placeholder="Search by title or author"
+						value={query}
+						onChange={(event) => this.handleSearchBooks(event.target.value)}/>
+					</div>
+				</div>
+				<div className="search-books-results">
+				{ this.state.foundBooks.length > 0 ? (
+					<Book
+						books = {foundBooks}
+						changeShelf= {changeShelf}
+						shelf = {books.shelf}
+					/>
+				) : (
 
-	                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-	                  you don't find a specific author or title. Every search is limited by search terms.
-	                */}
-	                <input
-	                	type="text"
-	                	placeholder="Search by title or author"
-	                	value={query}
-	                	onChange={(event) => this.handleSearchBooks(event.target.value)}/>
+					<h3>No Results</h3>
 
-	              </div>
-	            </div>
-            	<div className="search-books-results">
-
-            	{this.state.foundBooks.length > 0 ? (
-         			<Book
-                  	books = {foundBooks}
-                  	changeShelf= {changeShelf}
-                  	shelf = {books.shelf}
-                	/>
-            	) : (
-
-            		<h3>No Results</h3>
-
-            	)}
-
-            </div>
-          </div>
+				)}
+				</div>
+			</div>
 		)
 	}
 }
