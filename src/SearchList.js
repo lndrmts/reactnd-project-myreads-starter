@@ -8,10 +8,6 @@ class SearchList extends Component {
 		foundBooks: [],
 		query: ''
 	}
-	handleSearchBooks = (query) => {
-		this.updateQuery(query)
-		this.searchBooks(query)
-	 }
 	updateQuery = (query) => {
 		this.setState(() =>(
 			{
@@ -26,7 +22,15 @@ class SearchList extends Component {
 	          foundBooks: books
 	        }))
 	      })
+	    } else {
+	    	this.setState(() => ({
+	          foundBooks: []
+	        }))
 	    }
+	 }
+	 handleSearchBooks = (query) => {
+		this.searchBooks(query)
+		this.updateQuery(query)
 	 }
 
 	render() {
