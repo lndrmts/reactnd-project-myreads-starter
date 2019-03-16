@@ -5,12 +5,7 @@ The application has a search page where you can search for new books and insert 
 
 
 
-To get started developing right away:
-
-* install all project dependencies with `npm install`
-* start the development server with `npm start`
-
-## What You're Getting
+## File structure
 ```bash
 ├── CONTRIBUTING.md
 ├── README.md - This file.
