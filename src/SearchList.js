@@ -16,7 +16,7 @@ class SearchList extends Component {
 	}
 	searchBooks = (query)  => {
 		if (query) {
-					BooksAPI.search(query)
+				BooksAPI.search(query)
 					.then((response) => {
 						this.setState(() => ({
 							foundBooks: !response || response.error ? [] : response
