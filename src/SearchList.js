@@ -15,6 +15,7 @@ class SearchList extends Component {
 			query: query
 		}))
 	}
+
 	searchBooks = (query)  => {
 		try {
 
@@ -36,8 +37,15 @@ class SearchList extends Component {
 		}
 	}
 	handleSearchBooks = (query) => {
+		let timeout = null;
+		const inputSearch = document.getElementById('inputSearch');
 		this.updateQuery(query)
-		this.searchBooks(query)
+		inputSearch.onkeyup = () => {
+			clearTimeout(timeout);
+			timeout = setTimeout(() => {
+				this.searchBooks(query)
+			}, 200)
+		}
 	}
 
 	render() {
@@ -60,14 +68,12 @@ class SearchList extends Component {
 				<div className="search-books-bar">
 					<Link to="/" className="close-search">Close</Link>
 					<div className="search-books-input-wrapper">
-						<Debounce time="400" handler="onChange">
 							<input
 							id="inputSearch"
 							type="text"
 							placeholder="Search by title or author"
 							value={query}
-							onChange={(event) => this.handleSearchBooks(event.target.value)}/>
-						</Debounce>
+							onChange={(e) => this.handleSearchBooks(e.target.value)}/>
 					</div>
 				</div>
 				<div className="search-books-results">
