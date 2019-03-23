@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Book from './Book'
 import * as BooksAPI from './BooksAPI'
+import { Debounce } from 'react-throttle';
 
 class SearchList extends Component {
 	state = {
@@ -15,30 +16,28 @@ class SearchList extends Component {
 		}))
 	}
 	searchBooks = (query)  => {
-		if (query) {
-				BooksAPI.search(query)
-					.then((response) => {
-						this.setState(() => ({
-							foundBooks: !response || response.error ? [] : response
-					}))
-				})
-		} else {
-			this.setState(() => ({
-				foundBooks: []
-			}))
+		try {
+
+			if (query) {
+					BooksAPI.search(query)
+						.then((response) => {
+							this.setState(() => ({
+								foundBooks: !response || response.error ? [] : response
+						}))
+					})
+			} else {
+				this.setState(() => ({
+					foundBooks: []
+				}))
+
+			}
+		} catch (e) {
 
 		}
 	}
 	handleSearchBooks = (query) => {
-		let timeout = null;
-		const inputSearch = document.getElementById('inputSearch');
 		this.updateQuery(query)
-		inputSearch.onkeyup = () => {
-			clearTimeout(timeout);
-			timeout = setTimeout(() => {
-				this.searchBooks(query)
-			}, 100)
-		}
+		this.searchBooks(query)
 	}
 
 	render() {
@@ -51,6 +50,7 @@ class SearchList extends Component {
 				if(foundBook.id === book.id) {
 					foundBook.shelf = book.shelf
 				}
+				return books
 			})
 				return foundBook
 		})
@@ -60,12 +60,14 @@ class SearchList extends Component {
 				<div className="search-books-bar">
 					<Link to="/" className="close-search">Close</Link>
 					<div className="search-books-input-wrapper">
-						<input
-						id="inputSearch"
-						type="text"
-						placeholder="Search by title or author"
-						value={query}
-						onChange={(event) => this.handleSearchBooks(event.target.value)}/>
+						<Debounce time="400" handler="onChange">
+							<input
+							id="inputSearch"
+							type="text"
+							placeholder="Search by title or author"
+							value={query}
+							onChange={(event) => this.handleSearchBooks(event.target.value)}/>
+						</Debounce>
 					</div>
 				</div>
 				<div className="search-books-results">
