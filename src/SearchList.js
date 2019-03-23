@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Book from './Book'
 import * as BooksAPI from './BooksAPI'
-import { Debounce } from 'react-throttle';
 
 class SearchList extends Component {
 	state = {
